@@ -3,18 +3,30 @@
 function NPackage() {
   this.json = null;
   this.root = null;
-  this.flag = {
-    global: true
-  };
   this.envs = {};
 }
 
 NPackage.prototype.makeTask = function () {
   var start = this.$.cmd(this.json.scripts.start);
+  var out = { envs: {} };
 
-  start.cwd = this.root;
+  out.exec = start.exec;
+  out.args = start.args;
+  out.cwd  = this.root;
 
-  return start;
+  Object.keys(this.envs).forEach(function (key) {
+    out.envs[key] = this.envs[key];
+  }, this);
+
+  Object.keys(start.envs).forEach(function (key) {
+    out.envs[key] = start.envs[key];
+  }, this);
+
+  return out;
+};
+
+NPackage.prototype.setEnv = function (key, val) {
+  this.envs[key] = val;
 };
 
 NPackage.NewEmpty = function () {
