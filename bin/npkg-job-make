@@ -1,4 +1,23 @@
 #!/usr/bin/env node
 
-var make = require('../index.js');
-console.log(make(process.argv[2]))
+var check = require('lib-checked-domain')();
+var npkg = require('../index.js')();
+var token = process.argv[2];
+
+if (!token) return console.log('usage: npkg-job-make MODULE');
+
+check(function(){
+  var pk = npkg.NewFromToken(token, process.env.HOME);
+
+  Object.keys(process.env).forEach(function(key){
+    pk.setEnv(key, process.env[key]);
+  });
+
+  console.log(pk.makeTask())
+})
+.on('NoScript', function(e){
+  console.error('ERROR:', e.message)
+})
+.on('NoPackage', function(e){
+  console.error('ERROR:', e.message)
+})

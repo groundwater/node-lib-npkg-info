@@ -1,5 +1,6 @@
 'use strict';
 
+var check = require('lib-checked-domain')();
 var join = require('path').join;
 
 function NPackage() {
@@ -9,6 +10,9 @@ function NPackage() {
 }
 
 NPackage.prototype.makeTask = function () {
+  if (!this.json.scripts) throw check.Error('NoScript', 'no scripts defined');
+  if (!this.json.scripts.start) throw check.Error('NoScript', 'no start script');
+
   var start = this.$.cmd(this.json.scripts.start);
   var out = { envs: {} };
 
@@ -41,12 +45,20 @@ NPackage.NewFromToken = function (token, root) {
 };
 
 NPackage.NewFromPath = function (path) {
-  var file = this.readFileSync(path + '/package.json');
+  var file;
+  var pack = join(path, 'package.json');
+
+  try { file = this.readFileSync(pack); } catch (e) {
+    throw check.Error('NoPackage', 'no package.json');
+  }
 
   var npkg = this.NewEmpty();
 
   npkg.root = path;
-  npkg.json = JSON.parse(file);
+
+  try { npkg.json = JSON.parse(file); } catch (e) {
+    throw check.Error('JSONParse', 'bad package.json');
+  }
 
   return npkg;
 };

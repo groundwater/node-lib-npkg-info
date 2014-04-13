@@ -14,7 +14,8 @@
   },
   "dependencies": {
     "lib-cmdparse": "^0.1.0",
-    "lib-npkg-resolve": "^0.1.0"
+    "lib-npkg-resolve": "^0.1.0",
+    "lib-checked-domain": "0.0.0"
   },
   "directories": {
     "test": "test"
