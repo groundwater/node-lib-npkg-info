@@ -1,5 +1,7 @@
 'use strict';
 
+var join = require('path').join;
+
 function NPackage() {
   this.json = null;
   this.root = null;
@@ -33,6 +35,11 @@ NPackage.NewEmpty = function () {
   return Object.defineProperty(new NPackage(), '$', {value: this});
 };
 
+NPackage.NewFromToken = function (token, root) {
+  var libs = root ? join(root, this.LIB_PREFIX) : root;
+  return this.NewFromPath(this.resolve(token, libs));
+};
+
 NPackage.NewFromPath = function (path) {
   var file = this.readFileSync(path + '/package.json');
 
@@ -55,6 +62,12 @@ function defaults() {
     },
     cmd: {
       value: require('lib-cmdparse')
+    },
+    resolve: {
+      value: require('lib-npkg-resolve')
+    },
+    LIB_PREFIX: {
+      value: 'lib/node_modules'
     }
   };
 }

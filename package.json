@@ -13,7 +13,8 @@
     "tap": "^0.4.8"
   },
   "dependencies": {
-    "lib-cmdparse": "^0.1.0"
+    "lib-cmdparse": "^0.1.0",
+    "lib-npkg-resolve": "^0.1.0"
   },
   "directories": {
     "test": "test"
