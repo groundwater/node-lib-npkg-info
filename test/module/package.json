@@ -1,0 +1,11 @@
+{
+  "name": "DEMO",
+  "version": "1.2.3",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "A=B node tests allz the thingz"
+  },
+  "author": "",
+  "license": "ISC"
+}

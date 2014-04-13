@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+
+var make = require('../index.js');
+console.log(make(process.argv[2]))
